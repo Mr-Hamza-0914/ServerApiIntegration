@@ -185,6 +185,8 @@
         }
     }
 
+    // Fetch Servers List API Call
+
     async function fetchServersAndPopulateTable() {
         try {
             const response = await fetch(`${BASE_URL}/servers?page=1&pageSize=10`, requestOptions);
@@ -201,8 +203,6 @@
     }
 
     function populateServerTable(servers) {
-        console.log(servers);
-        alert('here');
         const tableBody = document.querySelector(".table-server tbody");
         tableBody.innerHTML = "";
 
@@ -214,19 +214,19 @@
                 <td>${server.vpsId}</td>
                 <td>${server.userId}</td>
                 <td>${server.name}</td>
-                <td>${server.status}</td>
-                <td>${server.ableToStop}</td>
-                <td>${server.ableToPowerOff}</td>
-                <td>${server.ableToStart}</td>
-                <td>${server.ableToReboot}</td>
-                <td>${server.ableToTerminate}</td>
-                <td>${server.vpsInstance}</td>
+                <td class="text-uppercase">${server.status}</td>
+                <td class="text-uppercase">${server.ableToStop}</td>
+                <td class="text-uppercaseer">${server.ableToPowerOff}</td>
+                <td class="text-uppercase">${server.ableToStart}</td>
+                <td class="text-uppercase">${server.ableToReboot}</td>
+                <td class="text-uppercase">${server.ableToTerminate}</td>
+                <td class="text-uppercase">${server.vpsInstance || '-'}</td>
             `;
 
             tableBody.appendChild(row);
         });
     }
-
+    fetchServersAndPopulateTable();
 </script>
 
 @endsection

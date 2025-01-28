@@ -17,9 +17,44 @@
     <nav class="navbar-mobile">
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
-                <li>
-                    <a href="">
-                        <i class="fas fa-chart-bar"></i>Charts</a>
+                <li class="{{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="{{url('/dashboard')}}">
+                        <i class="fas fa-home"></i>Home</a>
+                </li>
+                
+                <li class="{{ request()->is('servers') ? 'active' : '' }}">
+                    <a href="{{url('servers')}}">
+                        <i class="fas fa-server"></i>
+                        Servers
+                    </a>
+                </li>
+                
+                <li class="{{ request()->is('server/template') ? 'active' : '' }}">
+                    <a href="{{url('server/template')}}">
+                        <i class="fas fa-server"></i>
+                        Server Template
+                    </a>
+                </li>
+                
+                <li class="{{ request()->is('server/os') ? 'active' : '' }}">
+                    <a href="{{url('server/os')}}">
+                        <i class="fas fa-server"></i>
+                        Operating System
+                    </a>
+                </li>
+                
+                <li class="{{ request()->is('regions') ? 'active' : '' }}">
+                    <a href="{{url('regions')}}">
+                        <i class="fas fa-server"></i>
+                        Regions
+                    </a>
+                </li>
+                
+                <li class="{{ request()->is('credit') ? 'active' : '' }}">
+                    <a href="{{url('credit')}}">
+                        <i class="fas fa-bank"></i>
+                        Credit & Upcoming
+                    </a>
                 </li>
             </ul>
         </div>

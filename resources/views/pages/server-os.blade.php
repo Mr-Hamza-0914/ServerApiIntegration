@@ -76,7 +76,7 @@
                     <td>${i++}</td>
                     <td>${item.id}</td>
                     <td>${item.name}</td>
-                    <td>${item.descriptionSlug ?? "N/A"}</td>
+                    <td>${item.descriptionSlug ?? "-"}</td>
                 </tr>
             `;
             tableBody.insertAdjacentHTML("beforeend", row);

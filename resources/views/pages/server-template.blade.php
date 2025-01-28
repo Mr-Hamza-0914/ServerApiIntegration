@@ -78,12 +78,12 @@
                 <tr>
                     <td>${item.id ?? ''}</td>
                     <td>${item.name ?? ''}</td>
-                    <td>${item.setupFee ?? 'N/A'}</td>
-                    <td>${item.hourlyFee ?? 'N/A'}</td>
-                    <td>${item.description?.cpuCoreNo ?? 'N/A'}</td>
-                    <td>${item.description?.ram ?? 'N/A'}</td>
-                    <td>${item.description?.bandwidth ?? 'N/A'}</td>
-                    <td>${item.description?.hardDisk ?? 'N/A'} (${item.description?.hardDiskType ?? ''})</td>
+                    <td>${item.setupFee ?? '-'}</td>
+                    <td>${item.hourlyFee ?? '-'}</td>
+                    <td>${item.description?.cpuCoreNo ?? '-'}</td>
+                    <td>${item.description?.ram ?? '-'}</td>
+                    <td>${item.description?.bandwidth ?? '-'}</td>
+                    <td>${item.description?.hardDisk ?? '-'} (${item.description?.hardDiskType ?? ''})</td>
                     <td>
                         <button class="btn btn-info btn-sm" onclick="toggleDetails(${index})">Details</button>
                     </td>

@@ -27,8 +27,8 @@
                 const firstNameInput = document.getElementById('firstName');
                 const genderInput = document.getElementById('gender');
 
-                if (nameElement) nameElement.innerHTML = profile.firstName || 'N/A';
-                if (emailElement) emailElement.innerHTML = data.email || 'N/A';
+                if (nameElement) nameElement.innerHTML = profile.firstName || '-';
+                if (emailElement) emailElement.innerHTML = data.email || '-';
                 if (firstNameInput) firstNameInput.value = profile.firstName || '';
                 if (genderInput) {
                     let gender = 0;
@@ -38,7 +38,7 @@
                 }
             } else {
                 const error = await response.json();
-                alert(`Error: ${error.message}`);
+                showAlert(`Error: ${error.message}`);
             }
         } catch (err) {
             console.error('Error fetching profile:', err);
