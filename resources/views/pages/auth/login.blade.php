@@ -59,7 +59,7 @@
     </div>
 
     @include('component.script')
-    <script>
+    {{-- <script>
         const base_url = 'https://vps-api.readyservervps.com';
 
         // Login Functionality
@@ -85,7 +85,50 @@
                     showAlert('Error logging in: '+ error.response.data.message, 'error');
                 });
         });
+    </script> --}}
+
+    <script>
+        const base_url = `{{env('API_BASE_URL')}}`;
+    
+        // Helper function for fetch error handling
+        const handleFetchErrors = async (response) => {
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'An error occurred');
+            }
+            return response.json();
+        };
+    
+        // Login Functionality
+        document.getElementById('login-button').addEventListener('click', function () {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            fetch(`${base_url}/apv/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    userType: 'USER',
+                    authType: 'EMAIL_PASSWORD',
+                }),
+            })
+            .then(handleFetchErrors)
+            .then(response => {
+                showAlert('Login Successfully!', 'success');
+    
+                localStorage.setItem('user', JSON.stringify(response));
+                localStorage.setItem('token', response.sessionToken);
+    
+                window.location = '/dashboard';
+            })
+            .catch(error => {
+                showAlert('Error logging in: ' + error.message, 'error');
+            });
+        });
     </script>
+    
 </body>
 
 </html>

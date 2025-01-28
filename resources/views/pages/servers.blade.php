@@ -19,32 +19,23 @@
                     <div class="col-md-12">
                         <!-- DATA TABLE-->
                         <div class="table-responsive m-b-40">
-                            <table class="table table-borderless table-data3">
+                            <table class="table table-borderless table-data3 table-server">
                                 <thead>
                                     <tr>
-                                        <th>date</th>
-                                        <th>type</th>
-                                        <th>description</th>
-                                        <th>status</th>
-                                        <th>price</th>
+                                        <th>ID</th>
+                                        <th>VPS ID</th>
+                                        <th>User ID</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>Stop</th>
+                                        <th>Power OFF</th>
+                                        <th>Start</th>
+                                        <th>Reboot</th>
+                                        <th>Terminate</th>
+                                        <th>VPS Instance</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2018-09-29 05:57</td>
-                                        <td>Mobile</td>
-                                        <td>iPhone X 64Gb Grey</td>
-                                        <td class="process">Processed</td>
-                                        <td>$999.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2018-09-28 01:22</td>
-                                        <td>Mobile</td>
-                                        <td>Samsung S8 Black</td>
-                                        <td class="process">Processed</td>
-                                        <td>$756.00</td>
-                                    </tr>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                         <!-- END DATA TABLE-->
@@ -192,6 +183,48 @@
         } catch (error) {
             showAlert("Launch error:" + error , 'error');
         }
+    }
+
+    async function fetchServersAndPopulateTable() {
+        try {
+            const response = await fetch(`${BASE_URL}/servers?page=1&pageSize=10`, requestOptions);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch server data: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            populateServerTable(data.items);
+        } catch (error) {
+            console.error("Error fetching server data:", error);
+        }
+    }
+
+    function populateServerTable(servers) {
+        console.log(servers);
+        alert('here');
+        const tableBody = document.querySelector(".table-server tbody");
+        tableBody.innerHTML = "";
+
+        servers.forEach((server) => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${server.id}</td>
+                <td>${server.vpsId}</td>
+                <td>${server.userId}</td>
+                <td>${server.name}</td>
+                <td>${server.status}</td>
+                <td>${server.ableToStop}</td>
+                <td>${server.ableToPowerOff}</td>
+                <td>${server.ableToStart}</td>
+                <td>${server.ableToReboot}</td>
+                <td>${server.ableToTerminate}</td>
+                <td>${server.vpsInstance}</td>
+            `;
+
+            tableBody.appendChild(row);
+        });
     }
 
 </script>

@@ -55,7 +55,7 @@
     </div>
 
     @include('component.script')
-    <script>
+    {{-- <script>
         let sessionToken = '';
         const base_url = 'https://vps-api.readyservervps.com';
     
@@ -107,6 +107,88 @@
                 showAlert('Error completing registration: ' + error.response.data.message , 'error');
             });
         });
+    </script> --}}
+
+    <script>
+        let sessionToken = '';
+        const base_url = `{{env('API_BASE_URL')}}`;
+    
+        // Helper function for fetch error handling
+        const handleFetchErrors = async (response) => {
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'An error occurred');
+            }
+            return response.json();
+        };
+    
+        // Start Registration
+        document.getElementById('start-button').addEventListener('click', function () {
+            const email = document.getElementById('email').value;
+    
+            fetch(`${base_url}/apv/registration/start`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            })
+            .then(handleFetchErrors)
+            .then(response => {
+                sessionToken = response.sessionToken;
+                showAlert('OTP sent to your email!', 'success');
+                document.getElementById('start-form').classList.add('d-none');
+                document.getElementById('otp-form').classList.remove('d-none');
+            })
+            .catch(error => {
+                showAlert('Error starting registration: ' + error.message, 'error');
+            });
+        });
+    
+        // Verify OTP
+        document.getElementById('verify-button').addEventListener('click', function () {
+            const otp = document.getElementById('otp').value;
+    
+            fetch(`${base_url}/apv/registration/verify-otp`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sessionToken, otp }),
+            })
+            .then(handleFetchErrors)
+            .then(response => {
+                if (response.status === 'OTP_Verified') {
+                    showAlert('OTP Verified!', 'success');
+                    document.getElementById('otp-form').classList.add('d-none');
+                    document.getElementById('complete-form').classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                showAlert('Error verifying OTP: ' + error.message, 'error');
+            });
+        });
+    
+        // Complete Registration
+        document.getElementById('complete-button').addEventListener('click', function () {
+            const email = document.getElementById('email').value;
+    
+            fetch(`${base_url}/apv/registration/complete`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionToken,
+                    email,
+                    password: '12345678',
+                    confirmPassword: '12345678',
+                }),
+            })
+            .then(handleFetchErrors)
+            .then(response => {
+                showAlert('Registration Complete!', 'success');
+                window.location = '/dashboard';
+            })
+            .catch(error => {
+                showAlert('Error completing registration: ' + error.message, 'error');
+            });
+        });
     </script>
+    
 </body>
 </html>

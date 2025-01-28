@@ -3,9 +3,14 @@
     const API_URL = '{{ env("API_BASE_URL") }}/apv';
     const BASE_URL = '{{ env("API_BASE_URL")}}';
     if(!token) window.location = '/login';
-
+    
     async function getProfile() {
         try {
+            if (!token) {
+                console.error('Token is missing!');
+                return;
+            }
+
             const response = await fetch(`${API_URL}/profile`, {
                 method: 'GET',
                 headers: {
@@ -15,17 +20,22 @@
 
             if (response.ok) {
                 const data = await response.json();
-                const profile = data.profile;
+                const profile = data.profile || {};
 
-                document.querySelector('.name').innerHTML = `${profile.firstName}`;
-                document.querySelector('.email_address').innerHTML = data.email;
+                const nameElement = document.querySelector('.name');
+                const emailElement = document.querySelector('.email_address');
+                const firstNameInput = document.getElementById('firstName');
+                const genderInput = document.getElementById('gender');
 
-                let gender = 0;
-                if (profile.gender === 'FEMALE') gender = 1;
-                if (profile.gender === 'OTHER') gender = 2;
-
-                document.getElementById('firstName').value = profile.firstName;
-                document.getElementById('gender').value = gender;
+                if (nameElement) nameElement.innerHTML = profile.firstName || 'N/A';
+                if (emailElement) emailElement.innerHTML = data.email || 'N/A';
+                if (firstNameInput) firstNameInput.value = profile.firstName || '';
+                if (genderInput) {
+                    let gender = 0;
+                    if (profile.gender === 'FEMALE') gender = 1;
+                    if (profile.gender === 'OTHER') gender = 2;
+                    genderInput.value = gender;
+                }
             } else {
                 const error = await response.json();
                 alert(`Error: ${error.message}`);
